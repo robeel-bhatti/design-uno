@@ -1,7 +1,5 @@
 public enum GameState {
-
-    STARTING,
-    IN_PROGRESS,
-    FINISHED;
-
+  STARTING,
+  IN_PROGRESS,
+  FINISHED;
 }

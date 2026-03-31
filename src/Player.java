@@ -4,43 +4,26 @@ import java.util.List;
 public class Player {
 
   private final String name;
-
-  private List<Card> deck = new ArrayList<>();
+  private final List<Card> hand = new ArrayList<>();
 
   public Player(String name) {
     this.name = name;
   }
 
-  public String getName() {
-    return this.name;
-  }
-
-  public List<Card> getDeck() {
-    return this.deck;
-  }
-
-  public void setDeck(List<Card> deck) {
-    this.deck = deck;
+  public boolean hasEmptyHand() {
+    return this.hand.isEmpty();
   }
 
   /**
-   * If the player can play a card, remove it from their deck.
+   * Finds and removes the first playable card from the player's hand.
    *
-   * <p>In the future, if the return statement is removed after the deck is updated, this will risk
-   * a ConcurrentModificationException being thrown. Use the deck's Iterator directly to avoid that
-   * exception.
-   *
-   * @param topCard The top card on the discard pile
-   * @return The card the player plays, which becomes the new top card on the discard pile.
+   * <p>Uses a for-each loop with an early return after removal. This is safe because the method
+   * exits immediately, but would risk ConcurrentModificationException if the loop continued.
    */
   public Card playCard(Card topCard) {
-    for (Card card : this.deck) {
-      if (card == null) {
-        throw new RuntimeException("GAME ERROR: Null card in player deck.");
-      }
-      if (card.getColor().equals(topCard.getColor())
-          || card.getDisplay().equals(topCard.getDisplay())) {
-        this.deck.remove(card);
+    for (Card card : this.hand) {
+      if (card.matches(topCard)) {
+        this.hand.remove(card);
         return card;
       }
     }
@@ -48,6 +31,11 @@ public class Player {
   }
 
   public void drawCard(Card card) {
-    this.deck.add(card);
+    this.hand.add(card);
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
   }
 }

@@ -1,18 +1,11 @@
-public class Card {
+public record Card(Color color, Display display) {
 
-    private Color color;
-    private Display display;
+  public boolean matches(Card other) {
+    return this.color == other.color || this.display == other.display;
+  }
 
-    public Card(Color color, Display display) {
-        this.color = color;
-        this.display = display;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public Display getDisplay() {
-        return display;
-    }
+  @Override
+  public String toString() {
+    return this.color + " " + this.display;
+  }
 }
